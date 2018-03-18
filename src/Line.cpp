@@ -15,7 +15,7 @@ Line::Line(const sf::Vector2f &av, const sf::Vector2f &bv, const sf::Color &colo
 {
 }
 
-void Line::draw(sf::RenderTarget& target, const sf::RenderStates& states)
+void Line::draw(sf::RenderTarget& target, sf::RenderStates states) const
 {
 	sf::Vertex* vertices = new sf::Vertex[2]{ a, b };
 	target.draw(vertices, 2, sf::PrimitiveType::Lines, states);

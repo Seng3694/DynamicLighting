@@ -1,8 +1,10 @@
-#include "Game.hpp"
-#include "Colors.hpp"
+#include <sstream>
 
 #include <SFML/Graphics.hpp>
 #include <SFML/System.hpp>
+
+#include "Game.hpp"
+#include "Colors.hpp"
 
 Game::Game(const sf::VideoMode& videoMode, const sf::String& title)
 	: BaseGame(videoMode, title)
@@ -14,7 +16,7 @@ void Game::onLoad()
 	_random.setSeed(1337);
 	setClearColor(Colors::DarkSlateBlue);
 
-	_bigCircle.setPointCount(50);
+	_bigCircle.setPointCount(20);
 	_bigCircle.setPosition(600, 300);
 	_bigCircle.setRadius(100);
 	_bigCircle.setFillColor(sf::Color::Red);
@@ -39,7 +41,7 @@ void Game::onLoad()
 	for (int i = 0; i < 10; i++)
 	{
 		auto circle = sf::CircleShape();
-		circle.setPointCount(20);
+		circle.setPointCount(5);
 		circle.setPosition(sf::Vector2f(100 + (i * 100), i % 2 == 0 ? 700 : 550));
 		circle.setRadius(40);
 		circle.setFillColor(sf::Color(_random.range(50, 255), _random.range(50, 255), _random.range(50, 255)));
@@ -53,16 +55,36 @@ void Game::onLoad()
 
 	for (auto &c : _smallCircles)
 		_shapes.push_back(CollidableShape{ &c });
+
+	for (auto &s : _shapes)
+		s.reloadLines();
+
+	_light.setColor(sf::Color(0xFFB200FF));
+	_light.setDebugLineColor(sf::Color(0x999999FF));
+	_light.setDebugLinesEnabled(true);
+
+	_defaultFont.loadFromFile("content/fonts/boxy_bold.ttf");
+	_fpsLabel.setFont(_defaultFont);
+	_fpsLabel.setPosition(300, 10);
+	_fpsLabel.setColor(sf::Color::Black);
 }
 
 void Game::onHandleEvent(const sf::Event& e)
 {
-
+	if (e.type == sf::Event::EventType::MouseMoved)
+	{
+		_light.setPosition(sf::Vector2f(e.mouseMove.x, e.mouseMove.y));
+	}
 }
 
 void Game::onUpdate(float dt)
 {
+	_fpsCounter.update(dt);
+	std::stringstream ss;
+	ss << "Fps: " << _fpsCounter.getFps();
+	_fpsLabel.setString(ss.str());
 
+	_light.update(_shapes);
 }
 
 void Game::onDraw(sf::RenderTarget& target)
@@ -74,6 +96,10 @@ void Game::onDraw(sf::RenderTarget& target)
 
 	for (auto &c : _smallCircles)
 		target.draw(c);
+
+	target.draw(_light);
+
+	target.draw(_fpsLabel);
 }
 
 void Game::onUnload()

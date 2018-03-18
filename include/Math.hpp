@@ -14,3 +14,4 @@ float angle(const sf::Vector2f& a, const sf::Vector2f& b);
 
 sf::Vector2f intersection(const Line& left, const Line& right);
 sf::Vector2f raycast(const Line& line, const std::vector<Line>& lines);
+sf::Vector2f raycast(const sf::Vector2f& start, const sf::Vector2f& end, const std::vector<Line>& lines);

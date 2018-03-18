@@ -2,7 +2,7 @@
 
 #include <SFML/Graphics.hpp>
 
-struct Line
+struct Line : sf::Drawable
 {
 public:
 	sf::Vertex a;
@@ -12,5 +12,5 @@ public:
 	Line(const sf::Vertex &av, const sf::Vertex &bv);
 	Line(const sf::Vector2f &av, const sf::Vector2f &bv, const sf::Color &color);
 
-	void draw(sf::RenderTarget& target, const sf::RenderStates& states);
+	void draw(sf::RenderTarget& target, sf::RenderStates states) const override;
 };

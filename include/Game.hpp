@@ -6,6 +6,8 @@
 
 #include "BaseGame.hpp"
 #include "CollidableShape.hpp"
+#include "LightSource.hpp"
+#include "FpsCounter.hpp"
 
 class Game : public BaseGame
 {
@@ -26,4 +28,8 @@ private:
 	sf::ConvexShape _polygon1;
 	sf::ConvexShape _polygon2;
 	std::vector<sf::CircleShape> _smallCircles;
+	LightSource _light;
+	sf::Font _defaultFont;
+	FpsCounter _fpsCounter;
+	sf::Text _fpsLabel;
 };

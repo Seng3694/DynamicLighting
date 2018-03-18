@@ -51,6 +51,12 @@ sf::Vector2f intersection(const Line& left, const Line& right)
 	return sf::Vector2f(l_px + l_dx * T1, l_py + l_dy * T1);
 }
 
+
+sf::Vector2f raycast(const sf::Vector2f& start, const sf::Vector2f& end, const std::vector<Line>& lines)
+{
+	return raycast(Line{ start, end, sf::Color::Transparent }, lines);
+}
+
 sf::Vector2f raycast(const Line& line, const std::vector<Line>& lines)
 {
 	float shortest = std::numeric_limits<float>::max();
@@ -65,7 +71,7 @@ sf::Vector2f raycast(const Line& line, const std::vector<Line>& lines)
 		{
 			auto mag = magnitude(line.a.position, i);
 
-			if (mag < shortest && mag <= lineMag)
+			if (mag < shortest)
 			{
 				shortest = mag;
 				shortestIntersection = i;
