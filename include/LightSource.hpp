@@ -25,9 +25,9 @@ public:
 	sf::Color getDebugLineColor() const;
 
 private:
-	std::vector<Line> _rays;
 	sf::Color _color;
 	sf::Color _debugLineColor;
 	bool _debugLinesEnabled;
-	void calculateRays(std::vector<Line> &lines);
+	std::vector<sf::Vertex> _vertices;
+	std::vector<sf::Vertex> calculatePolygonVertices(std::vector<Line> &lines);
 };

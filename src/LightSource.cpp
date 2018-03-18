@@ -48,33 +48,23 @@ void LightSource::update(std::vector<CollidableShape> &shapes)
 		lines.insert(lines.end(), l.begin(), l.end());
 	}
 
-	calculateRays(lines);
+	_vertices = calculatePolygonVertices(lines);
 }
 
 void LightSource::draw(sf::RenderTarget& target, sf::RenderStates states) const
 {
-	for (unsigned int i = 0; i < _rays.size(); i++)
+	target.draw(&_vertices[0], _vertices.size(), sf::PrimitiveType::TriangleFan, states);
+
+	if (_debugLinesEnabled)
 	{
-		auto polygon = sf::ConvexShape(3);
-		polygon.setPoint(0, _rays[i].b.position);
-		polygon.setPoint(1, _rays[i].a.position);
-
-		if (i + 1 < _rays.size())
-			polygon.setPoint(2, _rays[i + 1].b.position);
-		else
-			polygon.setPoint(2, _rays[0].b.position);
-
-		polygon.setFillColor(_color);
-		target.draw(polygon);
-
-		if (_debugLinesEnabled)
-			_rays[i].draw(target, states);
+		for (auto &it = _vertices.begin() + 1; it < _vertices.end() - 1; ++it)
+			Line{ sf::Vertex(getPosition(), _color), sf::Vertex(it->position, _debugLineColor) }.draw(target, states);
 	}
 }
 
-void LightSource::calculateRays(std::vector<Line> &lines)
+std::vector<sf::Vertex> LightSource::calculatePolygonVertices(std::vector<Line> &lines)
 {
-	std::vector<sf::Vector2f> intersections;
+	std::vector<sf::Vertex> vertices;
 	std::vector<sf::Vector2f> uniquePoints;
 	auto pos = getPosition();
 
@@ -92,29 +82,29 @@ void LightSource::calculateRays(std::vector<Line> &lines)
 		auto intersection = raycast(pos, pt, lines);
 		if (intersection.x != -1 || intersection.y != -1)
 		{
-			intersections.push_back(intersection);
+			vertices.push_back(sf::Vertex(intersection, _color));
 
 			auto x = cosf(ang + 0.0001f);
 			auto y = sinf(ang + 0.0001f);
 			intersection = raycast(pos, pos + sf::Vector2f(x, y), lines);
 			if (intersection.x != -1 || intersection.y != -1) 
-				intersections.push_back(intersection);
+				vertices.push_back(sf::Vertex(intersection, _color));
 
 			x = cosf(ang - 0.0001f);
 			y = sinf(ang - 0.0001f);
 			intersection = raycast(pos, pos + sf::Vector2f(x, y), lines);
 			if (intersection.x != -1 || intersection.y != -1) 
-				intersections.push_back(intersection);
+				vertices.push_back(sf::Vertex(intersection, _color));
 		}
 	}
 
-	_rays.clear();
-	
-	for (auto &intersection : intersections)
-		_rays.push_back(Line{ pos, intersection, _debugLineColor });
-
-	std::sort(_rays.begin(), _rays.end(), [](const auto& lhs, const auto& rhs)
+	std::sort(vertices.begin(), vertices.end(), [pos](const auto& lhs, const auto& rhs)
 	{
-		return angle(lhs) < angle(rhs);
+		return angle(pos, lhs.position) < angle(pos, rhs.position);
 	});
+
+	vertices.push_back(vertices[0]);
+	vertices.insert(vertices.begin(), sf::Vertex(pos, _color));
+
+	return vertices;
 }

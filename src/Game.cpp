@@ -60,7 +60,7 @@ void Game::onLoad()
 		s.reloadLines();
 
 	_light.setColor(sf::Color(0xFFB200FF));
-	_light.setDebugLineColor(sf::Color(0x999999FF));
+	_light.setDebugLineColor(sf::Color(0x000000FF));
 	_light.setDebugLinesEnabled(true);
 
 	_defaultFont.loadFromFile("content/fonts/boxy_bold.ttf");
@@ -104,5 +104,4 @@ void Game::onDraw(sf::RenderTarget& target)
 
 void Game::onUnload()
 {
-
 }
