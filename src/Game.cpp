@@ -66,7 +66,7 @@ void Game::onLoad()
 	_defaultFont.loadFromFile("content/fonts/boxy_bold.ttf");
 	_fpsLabel.setFont(_defaultFont);
 	_fpsLabel.setPosition(300, 10);
-	_fpsLabel.setColor(sf::Color::Black);
+	_fpsLabel.setFillColor(sf::Color::Black);
 }
 
 void Game::onHandleEvent(const sf::Event& e)
@@ -74,6 +74,13 @@ void Game::onHandleEvent(const sf::Event& e)
 	if (e.type == sf::Event::EventType::MouseMoved)
 	{
 		_light.setPosition(sf::Vector2f(e.mouseMove.x, e.mouseMove.y));
+	}
+	if (e.type == sf::Event::EventType::KeyReleased)
+	{
+		if (e.key.code == sf::Keyboard::D)
+		{
+			_light.setDebugLinesEnabled(!_light.getDebugLinesEnabled());
+		}
 	}
 }
 

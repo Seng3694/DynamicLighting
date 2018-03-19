@@ -1,6 +1,5 @@
 #include "LightSource.hpp"
 #include "Math.hpp"
-#include <set>
 #include <algorithm>
 
 LightSource::LightSource()
@@ -74,7 +73,13 @@ std::vector<sf::Vertex> LightSource::calculatePolygonVertices(std::vector<Line> 
 		uniquePoints.push_back(lines[i].b.position);
 	}
 
-	uniquePoints.erase(std::unique(uniquePoints.begin(), uniquePoints.end()), uniquePoints.end());
+#error DOES NOT WORK PROPERLY
+	uniquePoints.erase(
+		std::unique(
+			uniquePoints.begin(), 
+			uniquePoints.end(),
+			[](sf::Vector2f l, sf::Vector2f r) { return std::abs(l.x - r.x) < 0.001 && std::abs(l.y - r.y) < 0.001; }), 
+		uniquePoints.end());
 
 	for (auto &pt : uniquePoints)
 	{

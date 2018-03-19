@@ -6,6 +6,8 @@
 
 #include "Line.hpp"
 
+float length(const sf::Vector2f &vec);
+
 float magnitude(const Line& line);
 float magnitude(const sf::Vector2f& a, const sf::Vector2f& b);
 

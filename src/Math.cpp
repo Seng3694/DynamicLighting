@@ -3,6 +3,11 @@
 #include <math.h>
 #include <limits>
 
+float length(const sf::Vector2f &vec)
+{
+	return sqrtf(pow(vec.x, 2) + pow(vec.y, 2));
+}
+
 float magnitude(const Line& line)
 {
 	return magnitude(line.a.position, line.b.position);
