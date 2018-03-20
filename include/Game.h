@@ -4,10 +4,10 @@
 
 #include <SFML/Graphics.hpp>
 
-#include "BaseGame.hpp"
-#include "CollidableShape.hpp"
-#include "LightSource.hpp"
-#include "FpsCounter.hpp"
+#include "BaseGame.h"
+#include "CollidableShape.h"
+#include "LightSource.h"
+#include "FpsCounter.h"
 
 class Game : public BaseGame
 {

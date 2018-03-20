@@ -4,7 +4,7 @@
 
 #include <SFML/Graphics.hpp>
 
-#include "Line.hpp"
+#include "Line.h"
 
 int clamp(const int &value, const int &min, const int &max);
 int circle(const int &value, const int &min, const int &max);

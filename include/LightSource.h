@@ -4,8 +4,8 @@
 
 #include <SFML/Graphics.hpp>
 
-#include "CollidableShape.hpp"
-#include "Line.hpp"
+#include "CollidableShape.h"
+#include "Line.h"
 
 class LightSource : public sf::Drawable, public sf::Transformable
 {

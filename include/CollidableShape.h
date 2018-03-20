@@ -2,7 +2,7 @@
 
 #include <SFML/Graphics.hpp>
 
-#include "Line.hpp"
+#include "Line.h"
 
 class CollidableShape
 {

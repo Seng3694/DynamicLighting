@@ -1,4 +1,4 @@
-#include "CollidableShape.hpp"
+#include "CollidableShape.h"
 
 CollidableShape::CollidableShape(sf::Shape* shape)
 {

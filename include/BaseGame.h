@@ -2,7 +2,7 @@
 
 #include <SFML/Graphics.hpp>
 
-#include "Random.hpp"
+#include "Random.h"
 
 class BaseGame
 {

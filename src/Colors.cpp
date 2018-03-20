@@ -1,4 +1,4 @@
-#include "Colors.hpp"
+#include "Colors.h"
 
 const sf::Color Colors::DarkSlateBlue = sf::Color(0x18395AFF);
 const sf::Color Colors::DeepFuchsia = sf::Color(0x571845FF);

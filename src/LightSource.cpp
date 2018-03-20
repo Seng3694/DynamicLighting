@@ -1,7 +1,7 @@
 #include <algorithm>
 
-#include "LightSource.hpp"
-#include "Math.hpp"
+#include "LightSource.h"
+#include "CustomMath.h"
 
 LightSource::LightSource()
 	: _debugLineColor(sf::Color::Red), _color(sf::Color::Yellow)

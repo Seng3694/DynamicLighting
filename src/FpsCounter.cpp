@@ -1,4 +1,4 @@
-#include "FpsCounter.hpp"
+#include "FpsCounter.h"
 
 void FpsCounter::update(const float &dt)
 {

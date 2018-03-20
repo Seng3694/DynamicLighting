@@ -1,7 +1,7 @@
 #include <SFML/Graphics.hpp>
 
-#include "Game.hpp"
-#include "CollidableShape.hpp"
+#include "Game.h"
+#include "CollidableShape.h"
 
 int main()
 {

@@ -3,9 +3,9 @@
 #include <SFML/Graphics.hpp>
 #include <SFML/System.hpp>
 
-#include "Game.hpp"
-#include "Colors.hpp"
-#include "Math.hpp"
+#include "Game.h"
+#include "Colors.h"
+#include "CustomMath.h"
 
 Game::Game(const sf::VideoMode& videoMode, const sf::String& title)
 	: BaseGame(videoMode, title)

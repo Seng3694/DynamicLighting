@@ -1,7 +1,7 @@
 #include <math.h>
 #include <limits>
 
-#include "Math.hpp"
+#include "CustomMath.h"
 
 int clamp(const int &value, const int &min, const int &max)
 {

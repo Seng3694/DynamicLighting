@@ -1,4 +1,4 @@
-#include "BaseGame.hpp"
+#include "BaseGame.h"
 
 BaseGame::BaseGame(const sf::VideoMode& videoMode, const sf::String& title)
 {

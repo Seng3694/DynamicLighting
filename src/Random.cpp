@@ -1,7 +1,7 @@
 #include <stdlib.h>
 #include <time.h>
 
-#include "Random.hpp"
+#include "Random.h"
 
 Random::Random()
 {
