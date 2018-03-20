@@ -3,7 +3,7 @@
 C++ SFML experimental dynamic lighting project without shaders.
 
 ## Preview ##
-![Preview][1]
+<img src="https://cdn.discordapp.com/attachments/425728769236664350/425728835103883265/lighting_preview.gif" width="300px">
 
 ## Build ##
 Project uses [CMake][2] to generate platform and compiler-specific build files.
