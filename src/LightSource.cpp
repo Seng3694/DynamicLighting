@@ -4,7 +4,7 @@
 #include "CustomMath.h"
 
 LightSource::LightSource()
-	: _debugLineColor(sf::Color::Red), _color(sf::Color::Yellow)
+	: _debugLineColor(sf::Color::Red), _color(sf::Color::Yellow), _isStatic(false), _staticAfterUpdate(false)
 {
 }
 
@@ -40,13 +40,13 @@ bool LightSource::getDebugLinesEnabled() const
 
 void LightSource::setIsStatic(const bool& value)
 {
-	if (value && !_isStatic)
+	if (value == true && !_isStatic)
 	{
 		_staticAfterUpdate = true;
 	}
-	else if (!value)
+	else if (value == false)
 	{
-		_isStatic = value;
+		_isStatic = false;
 		_staticAfterUpdate = false;
 	}
 }
@@ -58,7 +58,7 @@ bool LightSource::getIsStatic() const
 
 void LightSource::update(std::vector<CollidableShape> &shapes)
 {
-	if (_isStatic)
+	if (_isStatic == false)
 	{
 		std::vector<Line> lines;
 
