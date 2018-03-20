@@ -7,6 +7,8 @@
 #include "Line.hpp"
 
 float length(const sf::Vector2f &vec);
+float cross(const sf::Vector2f &left, const sf::Vector2f &right);
+bool isZero(const float &value);
 
 float magnitude(const Line& line);
 float magnitude(const sf::Vector2f& a, const sf::Vector2f& b);

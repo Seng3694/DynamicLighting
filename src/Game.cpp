@@ -41,7 +41,7 @@ void Game::onLoad()
 	for (int i = 0; i < 10; i++)
 	{
 		auto circle = sf::CircleShape();
-		circle.setPointCount(20);
+		circle.setPointCount(10);
 		circle.setPosition(sf::Vector2f(100 + (i * 100), i % 2 == 0 ? 700 : 550));
 		circle.setRadius(40);
 		circle.setFillColor(sf::Color(_random.range(50, 255), _random.range(50, 255), _random.range(50, 255)));

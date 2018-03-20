@@ -73,7 +73,6 @@ std::vector<sf::Vertex> LightSource::calculatePolygonVertices(std::vector<Line> 
 		uniquePoints.push_back(lines[i].b.position);
 	}
 
-#error DOES NOT WORK PROPERLY
 	uniquePoints.erase(
 		std::unique(
 			uniquePoints.begin(), 
@@ -85,22 +84,18 @@ std::vector<sf::Vertex> LightSource::calculatePolygonVertices(std::vector<Line> 
 	{
 		auto ang = angle(pos, pt);
 		auto intersection = raycast(pos, pt, lines);
-		if (intersection.x != -1 || intersection.y != -1)
-		{
-			vertices.push_back(sf::Vertex(intersection, _color));
 
-			auto x = cosf(ang + 0.0001f);
-			auto y = sinf(ang + 0.0001f);
-			intersection = raycast(pos, pos + sf::Vector2f(x, y), lines);
-			if (intersection.x != -1 || intersection.y != -1) 
-				vertices.push_back(sf::Vertex(intersection, _color));
+		vertices.push_back(sf::Vertex(intersection, _color));
 
-			x = cosf(ang - 0.0001f);
-			y = sinf(ang - 0.0001f);
-			intersection = raycast(pos, pos + sf::Vector2f(x, y), lines);
-			if (intersection.x != -1 || intersection.y != -1) 
-				vertices.push_back(sf::Vertex(intersection, _color));
-		}
+		auto x = cosf(ang + 0.0001f);
+		auto y = sinf(ang + 0.0001f);
+		intersection = raycast(pos, pos + sf::Vector2f(x, y), lines);
+		vertices.push_back(sf::Vertex(intersection, _color));
+			
+		x = cosf(ang - 0.0001f);
+		y = sinf(ang - 0.0001f);
+		intersection = raycast(pos, pos + sf::Vector2f(x, y), lines);
+		vertices.push_back(sf::Vertex(intersection, _color));
 	}
 
 	std::sort(vertices.begin(), vertices.end(), [pos](const auto& lhs, const auto& rhs)

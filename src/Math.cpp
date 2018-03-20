@@ -8,6 +8,16 @@ float length(const sf::Vector2f &vec)
 	return sqrtf(pow(vec.x, 2) + pow(vec.y, 2));
 }
 
+float cross(const sf::Vector2f &left, const sf::Vector2f &right)
+{
+	return left.x * right.y - left.y * right.x;
+}
+
+bool isZero(const float &value)
+{
+	return fabs(value) < FLT_EPSILON;
+}
+
 float magnitude(const Line& line)
 {
 	return magnitude(line.a.position, line.b.position);
@@ -15,7 +25,7 @@ float magnitude(const Line& line)
 
 float magnitude(const sf::Vector2f& a, const sf::Vector2f& b)
 {
-	return sqrtf(pow(a.x - b.x, 2) + pow(a.y - b.y, 2));
+	return sqrtf(powf(a.x - b.x, 2) + powf(a.y - b.y, 2));
 }
 
 float angle(const Line& line)
@@ -56,7 +66,6 @@ sf::Vector2f intersection(const Line& left, const Line& right)
 	return sf::Vector2f(l_px + l_dx * T1, l_py + l_dy * T1);
 }
 
-
 sf::Vector2f raycast(const sf::Vector2f& start, const sf::Vector2f& end, const std::vector<Line>& lines)
 {
 	return raycast(Line{ start, end, sf::Color::Transparent }, lines);
@@ -65,7 +74,7 @@ sf::Vector2f raycast(const sf::Vector2f& start, const sf::Vector2f& end, const s
 sf::Vector2f raycast(const Line& line, const std::vector<Line>& lines)
 {
 	float shortest = std::numeric_limits<float>::max();
-	auto shortestIntersection = sf::Vector2f{ -1, -1 };
+	auto shortestIntersection = sf::Vector2f{ 0 , 0 };
 	auto lineMag = magnitude(line);
 
 	for (auto l : lines)
