@@ -6,6 +6,9 @@
 
 #include "Line.hpp"
 
+int clamp(const int &value, const int &min, const int &max);
+int circle(const int &value, const int &min, const int &max);
+
 float length(const sf::Vector2f &vec);
 float cross(const sf::Vector2f &left, const sf::Vector2f &right);
 bool isZero(const float &value);

@@ -24,10 +24,16 @@ public:
 	void setDebugLineColor(const sf::Color& color);
 	sf::Color getDebugLineColor() const;
 
+	void setIsStatic(const bool& value);
+	bool getIsStatic() const;
+
 private:
 	sf::Color _color;
 	sf::Color _debugLineColor;
 	bool _debugLinesEnabled;
+	bool _isStatic;
+	bool _staticAfterUpdate;
 	std::vector<sf::Vertex> _vertices;
+
 	std::vector<sf::Vertex> calculatePolygonVertices(std::vector<Line> &lines);
 };

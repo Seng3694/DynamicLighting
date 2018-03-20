@@ -1,6 +1,7 @@
+#include <algorithm>
+
 #include "LightSource.hpp"
 #include "Math.hpp"
-#include <algorithm>
 
 LightSource::LightSource()
 	: _debugLineColor(sf::Color::Red), _color(sf::Color::Yellow)
@@ -37,24 +38,51 @@ bool LightSource::getDebugLinesEnabled() const
 	return _debugLinesEnabled;
 }
 
+void LightSource::setIsStatic(const bool& value)
+{
+	if (value && !_isStatic)
+	{
+		_staticAfterUpdate = true;
+	}
+	else if (!value)
+	{
+		_isStatic = value;
+		_staticAfterUpdate = false;
+	}
+}
+
+bool LightSource::getIsStatic() const
+{
+	return _isStatic;
+}
+
 void LightSource::update(std::vector<CollidableShape> &shapes)
 {
-	std::vector<Line> lines;
-
-	for (auto &s : shapes)
+	if (_isStatic)
 	{
-		auto l = s.getLines();
-		lines.insert(lines.end(), l.begin(), l.end());
-	}
+		std::vector<Line> lines;
 
-	_vertices = calculatePolygonVertices(lines);
+		for (auto &s : shapes)
+		{
+			auto l = s.getLines();
+			lines.insert(lines.end(), l.begin(), l.end());
+		}
+
+		_vertices = calculatePolygonVertices(lines);
+
+		if (_staticAfterUpdate)
+		{
+			_isStatic = true;
+			_staticAfterUpdate = false;
+		}
+	}
 }
 
 void LightSource::draw(sf::RenderTarget& target, sf::RenderStates states) const
 {
 	target.draw(&_vertices[0], _vertices.size(), sf::PrimitiveType::TriangleFan, states);
 
-	if (_debugLinesEnabled)
+	if (_debugLinesEnabled && _vertices.size() > 0)
 	{
 		for (auto &it = _vertices.begin() + 1; it < _vertices.end() - 1; ++it)
 			Line{ sf::Vertex(getPosition(), _color), sf::Vertex(it->position, _debugLineColor) }.draw(target, states);

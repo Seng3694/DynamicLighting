@@ -1,7 +1,21 @@
-#include "Math.hpp"
-
 #include <math.h>
 #include <limits>
+
+#include "Math.hpp"
+
+int clamp(const int &value, const int &min, const int &max)
+{
+	if (value > max) return max;
+	if (value < min) return min;
+	return value;
+}
+
+int circle(const int &value, const int &min, const int &max)
+{
+	if (value > max) return min;
+	if (value < min) return max;
+	return value;
+}
 
 float length(const sf::Vector2f &vec)
 {

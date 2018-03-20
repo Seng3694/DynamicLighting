@@ -1,6 +1,7 @@
-#include "Random.hpp"
 #include <stdlib.h>
 #include <time.h>
+
+#include "Random.hpp"
 
 Random::Random()
 {

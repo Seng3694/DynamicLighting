@@ -5,6 +5,7 @@
 
 #include "Game.hpp"
 #include "Colors.hpp"
+#include "Math.hpp"
 
 Game::Game(const sf::VideoMode& videoMode, const sf::String& title)
 	: BaseGame(videoMode, title)
@@ -13,10 +14,23 @@ Game::Game(const sf::VideoMode& videoMode, const sf::String& title)
 
 void Game::onLoad()
 {
-	_random.setSeed(1337);
-	setClearColor(Colors::DarkSlateBlue);
+	setClearColor(sf::Color::White);
+	_ambientColor = sf::Color(10, 10, 10);
+	_colors.push_back(Colors::DeepCobaltBlue);
+	_colors.push_back(Colors::DeepFuchsia);
+	_colors.push_back(Colors::Burgundy);
+	_colors.push_back(Colors::Crimson);
+	_colors.push_back(Colors::OutrageousOrange);
+	_colors.push_back(Colors::GoldenPoppy);
+	_colorIndex = 0;
 
-	_bigCircle.setPointCount(50);
+	_lightTexture.create(_window.getSize().x, _window.getSize().y);
+	_lightTexture.setSmooth(true);
+
+	_objectTexture.create(_window.getSize().x, _window.getSize().y);
+	_objectTexture.setSmooth(true);
+
+	_bigCircle.setPointCount(30);
 	_bigCircle.setPosition(600, 300);
 	_bigCircle.setRadius(100);
 	_bigCircle.setFillColor(sf::Color::Red);
@@ -38,12 +52,12 @@ void Game::onLoad()
 	_polygon2.setPoint(3, sf::Vector2f(900, 650));
 	_polygon2.setFillColor(sf::Color::Magenta);
 
-	for (int i = 0; i < 10; i++)
+	for (int i = 0; i < 5; i++)
 	{
 		auto circle = sf::CircleShape();
 		circle.setPointCount(10);
 		circle.setPosition(sf::Vector2f(100 + (i * 100), i % 2 == 0 ? 700 : 550));
-		circle.setRadius(40);
+		circle.setRadius(20);
 		circle.setFillColor(sf::Color(_random.range(50, 255), _random.range(50, 255), _random.range(50, 255)));
 		_smallCircles.push_back(circle);
 	}
@@ -59,7 +73,7 @@ void Game::onLoad()
 	for (auto &s : _shapes)
 		s.reloadLines();
 
-	_light.setColor(sf::Color(0xFFB200FF));
+	_light.setColor(_colors[_colorIndex]);
 	_light.setDebugLineColor(sf::Color(0x000000FF));
 	_light.setDebugLinesEnabled(true);
 
@@ -67,6 +81,11 @@ void Game::onLoad()
 	_fpsLabel.setFont(_defaultFont);
 	_fpsLabel.setPosition(300, 10);
 	_fpsLabel.setFillColor(sf::Color::Black);
+	_controlsText.setFont(_defaultFont);
+	_controlsText.setPosition(300, 70);
+	_controlsText.setFillColor(sf::Color::Black);
+	_controlsText.setString("Key D => toggle debug lines\n\nscroll => change color\n\nleft mouse => set light");
+	_controlsText.setScale(0.8f, 0.8f);
 }
 
 void Game::onHandleEvent(const sf::Event& e)
@@ -75,11 +94,36 @@ void Game::onHandleEvent(const sf::Event& e)
 	{
 		_light.setPosition(sf::Vector2f(e.mouseMove.x, e.mouseMove.y));
 	}
+	if (e.type == sf::Event::EventType::MouseButtonReleased)
+	{
+		if (e.mouseButton.button == sf::Mouse::Left)
+		{
+			_light.setIsStatic(true);
+			_staticLights.push_back(_light);
+
+			_light = LightSource{};
+			_light.setColor(_colors[_colorIndex]);
+			_light.setDebugLineColor(sf::Color(0x000000FF));
+			_light.setDebugLinesEnabled(_staticLights.back().getDebugLinesEnabled());
+		}
+	}
+	if (e.type == sf::Event::MouseWheelScrolled)
+	{
+		if (e.mouseWheelScroll.delta > 0) 
+			_colorIndex = circle(_colorIndex + 1, 0, _colors.size() - 1);
+		else if (e.mouseWheelScroll.delta < 0)
+			_colorIndex = circle(_colorIndex -1, 0, _colors.size() - 1);
+
+		_light.setColor(_colors[_colorIndex]);
+	}
 	if (e.type == sf::Event::EventType::KeyReleased)
 	{
 		if (e.key.code == sf::Keyboard::D)
 		{
 			_light.setDebugLinesEnabled(!_light.getDebugLinesEnabled());
+
+			for (auto &l : _staticLights)
+				l.setDebugLinesEnabled(!l.getDebugLinesEnabled());
 		}
 	}
 }
@@ -96,17 +140,32 @@ void Game::onUpdate(float dt)
 
 void Game::onDraw(sf::RenderTarget& target)
 {
-	target.draw(_bigCircle);
-	target.draw(_border);
-	target.draw(_polygon1);
-	target.draw(_polygon2);
+	target.clear(sf::Color::White);
+
+	_lightTexture.clear(_ambientColor);
+
+	for (auto &l : _staticLights)
+		_lightTexture.draw(l, sf::BlendAdd);
+
+	_lightTexture.draw(_light, sf::BlendAdd);
+	_lightTexture.display();
+
+	_objectTexture.clear(sf::Color::White);
+
+	_objectTexture.draw(_bigCircle);
+	_objectTexture.draw(_border);
+	_objectTexture.draw(_polygon1);
+	_objectTexture.draw(_polygon2);
 
 	for (auto &c : _smallCircles)
-		target.draw(c);
+		_objectTexture.draw(c);
 
-	target.draw(_light);
+	_objectTexture.draw(sf::Sprite(_lightTexture.getTexture()), sf::BlendMultiply);
+	_objectTexture.display();
 
+	target.draw(sf::Sprite(_objectTexture.getTexture()));
 	target.draw(_fpsLabel);
+	target.draw(_controlsText);
 }
 
 void Game::onUnload()

@@ -1,5 +1,6 @@
-#include "Line.hpp"
 #include <math.h>
+
+#include "Line.hpp"
 
 Line::Line()
 {

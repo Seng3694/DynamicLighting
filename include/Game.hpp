@@ -32,4 +32,12 @@ private:
 	sf::Font _defaultFont;
 	FpsCounter _fpsCounter;
 	sf::Text _fpsLabel;
+	sf::Text _controlsText;
+
+	std::vector<LightSource> _staticLights;
+	sf::RenderTexture _lightTexture;
+	sf::RenderTexture _objectTexture;
+	sf::Color _ambientColor;
+	int _colorIndex;
+	std::vector<sf::Color> _colors;
 };
