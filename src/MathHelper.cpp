@@ -67,7 +67,7 @@ Nullable<sf::Vector2f> MathHelper::intersection(const sf::Vector2f &a1, const sf
 
 	auto d = cross(r, s);
 
-	//if the cross product of two 2D vectors is zero, the lines are parallel which means there are either infinite intersections or none
+	//if the cross product of two 2D vectors is zero, the lines are parallel which means they are either infinite intersections or none
 	if (isZero(d))
 		return Nullable<sf::Vector2f>();
 
