@@ -5,7 +5,7 @@
 
 #include "Game.h"
 #include "Colors.h"
-#include "CustomMath.h"
+#include "MathHelper.h"
 
 Game::Game(const sf::VideoMode& videoMode, const sf::String& title)
 	: BaseGame(videoMode, title)
@@ -110,9 +110,9 @@ void Game::onHandleEvent(const sf::Event& e)
 	if (e.type == sf::Event::MouseWheelScrolled)
 	{
 		if (e.mouseWheelScroll.delta > 0) 
-			_colorIndex = circle(_colorIndex + 1, 0, _colors.size() - 1);
+			_colorIndex = MathHelper::circle(_colorIndex + 1, 0, _colors.size() - 1);
 		else if (e.mouseWheelScroll.delta < 0)
-			_colorIndex = circle(_colorIndex -1, 0, _colors.size() - 1);
+			_colorIndex = MathHelper::circle(_colorIndex -1, 0, _colors.size() - 1);
 
 		_light.setColor(_colors[_colorIndex]);
 	}

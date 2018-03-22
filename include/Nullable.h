@@ -11,7 +11,6 @@ public:
 	void setNull();
 	bool hasValue();
 
-	operator T&();
 	operator T() const;
 
 private:

@@ -34,12 +34,6 @@ inline bool Nullable<T>::hasValue()
 }
 
 template<typename T>
-inline Nullable<T>::operator T&()
-{
-	return _value;
-}
-
-template<typename T>
 inline Nullable<T>::operator T() const
 {
 	return _value;
