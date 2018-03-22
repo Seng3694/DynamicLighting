@@ -28,13 +28,14 @@ private:
 	sf::ConvexShape _polygon1;
 	sf::ConvexShape _polygon2;
 	std::vector<sf::CircleShape> _smallCircles;
-	LightSource _light;
 	sf::Font _defaultFont;
 	FpsCounter _fpsCounter;
 	sf::Text _fpsLabel;
 	sf::Text _controlsText;
-
 	std::vector<LightSource> _staticLights;
+	std::vector<LightSource> _dynamicLights;
+	std::vector<sf::CircleShape> _lightSourceCircles;
+	float _radius;
 	sf::RenderTexture _lightTexture;
 	sf::RenderTexture _objectTexture;
 	sf::Color _ambientColor;
