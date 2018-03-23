@@ -9,7 +9,7 @@ C++ SFML experimental dynamic lighting project without shaders.
 Project uses [CMake][2] to generate platform and compiler-specific build files.
 
 ### Dependencies ###
-Before building, make sure that [SFML 2.0+][3] is installed. Also note that this project uses `C++11` features such as `auto` and `lambdas`, and therefore requires a `C++11` compliant compiler in order to build successfully.
+Before building, make sure that [SFML 2.0+][3] is installed. Also note that this project uses `C++14` features such as `auto` and `lambdas`, and therefore requires a `C++14` compliant compiler in order to build successfully.
 
 ### Building on Windows (Visual Studio) ###
 1. Ensure SFML is installed (if CMake fails to find SFML automatically, edit the `SFML_ROOT` variable in the [CMakeLists.txt][4])
