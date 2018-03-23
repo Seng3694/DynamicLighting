@@ -1,0 +1,2 @@
+cmake/modules/* linguist-vendored=true
+tests/include/catch.h linguist-vendored=true
