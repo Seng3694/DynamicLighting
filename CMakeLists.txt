@@ -13,3 +13,4 @@ set(SFML_ROOT "C:/Program Files (x86)/SFML")
 
 add_subdirectory(engine)
 add_subdirectory(app)
+add_subdirectory(tests)
