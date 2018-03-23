@@ -14,7 +14,7 @@ int seng::MathHelper::clamp(const int &value, const int &min, const int &max)
 	return value;
 }
 
-int seng::MathHelper::circle(const int &value, const int &min, const int &max)
+int seng::MathHelper::circleClamp(const int &value, const int &min, const int &max)
 {
 	if (value > max) return min;
 	if (value < min) return max;

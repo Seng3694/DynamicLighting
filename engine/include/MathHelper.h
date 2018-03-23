@@ -13,7 +13,7 @@ namespace seng
 	{
 	public:
 		static int clamp(const int &value, const int &min, const int &max);
-		static int circle(const int &value, const int &min, const int &max);
+		static int circleClamp(const int &value, const int &min, const int &max);
 
 		static float length(const sf::Vector2f &vec);
 		static float dot(const sf::Vector2f &left, const sf::Vector2f &right);

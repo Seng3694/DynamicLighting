@@ -5,14 +5,10 @@ set(INCLUDE_DIRS
 	${ENGINE_BASE_DIR}/include
 )
 
-set(APP_SOURCE_FILES
+set(SOURCES
 	src/Colors.cpp
 	src/Game.cpp
 	src/Main.cpp
-)
-
-set(SOURCES
-	${APP_SOURCE_FILES}
 )
 
 include_directories(${INCLUDE_DIRS})

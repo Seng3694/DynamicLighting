@@ -152,9 +152,9 @@ void Game::onHandleEvent(const sf::Event& e)
 	if (e.type == sf::Event::MouseWheelScrolled)
 	{
 		if (e.mouseWheelScroll.delta > 0) 
-			_colorIndex = seng::MathHelper::circle(_colorIndex + 1, 0, _colors.size() - 1);
+			_colorIndex = seng::MathHelper::circleClamp(_colorIndex + 1, 0, _colors.size() - 1);
 		else if (e.mouseWheelScroll.delta < 0)
-			_colorIndex = seng::MathHelper::circle(_colorIndex -1, 0, _colors.size() - 1);
+			_colorIndex = seng::MathHelper::circleClamp(_colorIndex -1, 0, _colors.size() - 1);
 
 		for (auto &l : _dynamicLights)
 		{
