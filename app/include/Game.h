@@ -5,11 +5,11 @@
 #include <SFML/Graphics.hpp>
 
 #include "BaseGame.h"
-#include "CollidableShape.h"
-#include "LightSource.h"
 #include "FpsCounter.h"
+#include "LightSource.h"
+#include "CollidableShape.h"
 
-class Game : public BaseGame
+class Game : public seng::BaseGame
 {
 public:
 	Game(const sf::VideoMode& videoMode, const sf::String& title);
@@ -22,18 +22,18 @@ protected:
 	virtual void onUnload() override;
 
 private:
-	std::vector<CollidableShape> _shapes;
+	std::vector<seng::CollidableShape> _shapes;
 	sf::CircleShape _bigCircle;
 	sf::RectangleShape _border;
 	sf::ConvexShape _polygon1;
 	sf::ConvexShape _polygon2;
 	std::vector<sf::CircleShape> _smallCircles;
 	sf::Font _defaultFont;
-	FpsCounter _fpsCounter;
+	seng::FpsCounter _fpsCounter;
 	sf::Text _fpsLabel;
 	sf::Text _controlsText;
-	std::vector<LightSource> _staticLights;
-	std::vector<LightSource> _dynamicLights;
+	std::vector<seng::LightSource> _staticLights;
+	std::vector<seng::LightSource> _dynamicLights;
 	std::vector<sf::CircleShape> _lightSourceCircles;
 	float _radius;
 	sf::RenderTexture _lightTexture;

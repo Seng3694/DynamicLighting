@@ -3,28 +3,28 @@
 
 #include "Random.h"
 
-Random::Random()
+seng::Random::Random()
 {
 	setSeed(time(0));
 }
 
-unsigned int Random::getSeed() const
+unsigned int seng::Random::getSeed() const
 {
 	return _seed;
 }
 
-void Random::setSeed(const unsigned int &seed)
+void seng::Random::setSeed(const unsigned int &seed)
 {
 	_seed = seed;
 	srand(seed);
 }
 
-int Random::next() const
+int seng::Random::next() const
 {
 	return rand();
 }
 
-int Random::range(const int &fromIncl, const int &toIncl) const
+int seng::Random::range(const int &fromIncl, const int &toIncl) const
 {
 	auto range = toIncl - fromIncl + 1;
 	return (rand() % range) + fromIncl;

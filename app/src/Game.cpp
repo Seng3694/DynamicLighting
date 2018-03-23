@@ -4,14 +4,15 @@
 #include <SFML/Graphics.hpp>
 #include <SFML/System.hpp>
 
+#include "MathHelper.h"
+
 #include "Game.h"
 #include "Colors.h"
-#include "MathHelper.h"
 
 #define PI 3.14159265358979323846f
 
 Game::Game(const sf::VideoMode& videoMode, const sf::String& title)
-	: BaseGame(videoMode, title)
+	: seng::BaseGame(videoMode, title)
 {
 }
 
@@ -74,20 +75,20 @@ void Game::onLoad()
 		_smallCircles.push_back(circle);
 	}
 
-	_shapes.push_back(CollidableShape{ &_bigCircle });
-	_shapes.push_back(CollidableShape{ &_border });
-	_shapes.push_back(CollidableShape{ &_polygon1 });
-	_shapes.push_back(CollidableShape{ &_polygon2 });
+	_shapes.push_back(seng::CollidableShape{ &_bigCircle });
+	_shapes.push_back(seng::CollidableShape{ &_border });
+	_shapes.push_back(seng::CollidableShape{ &_polygon1 });
+	_shapes.push_back(seng::CollidableShape{ &_polygon2 });
 
 	for (auto &c : _smallCircles)
-		_shapes.push_back(CollidableShape{ &c });
+		_shapes.push_back(seng::CollidableShape{ &c });
 
 	for (auto &s : _shapes)
 		s.reloadLines();
 
 	for (int i = 0; i < 8; i++)
 	{
-		auto light = LightSource();
+		auto light = seng::LightSource();
 
 		light.setColor(_colors[_colorIndex]);
 		light.setDebugLineColor(sf::Color(0x000000FF));
@@ -141,7 +142,7 @@ void Game::onHandleEvent(const sf::Event& e)
 				l.setIsStatic(true);
 				_staticLights.push_back(l);
 
-				l = LightSource();
+				l = seng::LightSource();
 				l.setColor(_colors[_colorIndex]);
 				l.setDebugLineColor(sf::Color(0x000000FF));
 				l.setDebugLinesEnabled(_staticLights.back().getDebugLinesEnabled());
@@ -151,9 +152,9 @@ void Game::onHandleEvent(const sf::Event& e)
 	if (e.type == sf::Event::MouseWheelScrolled)
 	{
 		if (e.mouseWheelScroll.delta > 0) 
-			_colorIndex = MathHelper::circle(_colorIndex + 1, 0, _colors.size() - 1);
+			_colorIndex = seng::MathHelper::circle(_colorIndex + 1, 0, _colors.size() - 1);
 		else if (e.mouseWheelScroll.delta < 0)
-			_colorIndex = MathHelper::circle(_colorIndex -1, 0, _colors.size() - 1);
+			_colorIndex = seng::MathHelper::circle(_colorIndex -1, 0, _colors.size() - 1);
 
 		for (auto &l : _dynamicLights)
 		{

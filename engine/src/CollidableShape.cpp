@@ -1,11 +1,11 @@
 #include "CollidableShape.h"
 
-CollidableShape::CollidableShape(sf::Shape* shape)
+seng::CollidableShape::CollidableShape(sf::Shape* shape)
 {
 	_shape = shape;
 }
 
-void CollidableShape::reloadLines()
+void seng::CollidableShape::reloadLines()
 {
 	_lines.clear();
 
@@ -18,7 +18,7 @@ void CollidableShape::reloadLines()
 	}
 }
 
-std::vector<Line> CollidableShape::getLines()
+std::vector<seng::Line> seng::CollidableShape::getLines()
 {
 	return _lines;
 }

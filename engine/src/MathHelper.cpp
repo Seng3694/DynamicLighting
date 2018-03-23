@@ -7,64 +7,64 @@
 #define FLT_EPSILON 1.192092896e-07F // smallest such that 1.0+FLT_EPSILON != 1.0
 #endif
 
-int MathHelper::clamp(const int &value, const int &min, const int &max)
+int seng::MathHelper::clamp(const int &value, const int &min, const int &max)
 {
 	if (value > max) return max;
 	if (value < min) return min;
 	return value;
 }
 
-int MathHelper::circle(const int &value, const int &min, const int &max)
+int seng::MathHelper::circle(const int &value, const int &min, const int &max)
 {
 	if (value > max) return min;
 	if (value < min) return max;
 	return value;
 }
 
-float MathHelper::length(const sf::Vector2f &vec)
+float seng::MathHelper::length(const sf::Vector2f &vec)
 {
 	return sqrtf(powf(vec.x, 2) + powf(vec.y, 2));
 }
 
 //normally the cross product is not possible in 2D
 //this will return the Z component of the cross product in a 3D environment
-float MathHelper::cross(const sf::Vector2f &left, const sf::Vector2f &right)
+float seng::MathHelper::cross(const sf::Vector2f &left, const sf::Vector2f &right)
 {
 	return left.x * right.y - left.y * right.x;
 }
 
-float MathHelper::dot(const sf::Vector2f &left, const sf::Vector2f &right)
+float seng::MathHelper::dot(const sf::Vector2f &left, const sf::Vector2f &right)
 {
 	return left.x * right.y + left.y * right.x;
 }
 
-bool MathHelper::isZero(const float &value)
+bool seng::MathHelper::isZero(const float &value)
 {
 	return fabs(value) < FLT_EPSILON;
 }
 
-float MathHelper::magnitude(const Line& line)
+float seng::MathHelper::magnitude(const Line& line)
 {
 	return magnitude(line.a.position, line.b.position);
 }
 
-float MathHelper::magnitude(const sf::Vector2f& a, const sf::Vector2f& b)
+float seng::MathHelper::magnitude(const sf::Vector2f& a, const sf::Vector2f& b)
 {
 	return sqrtf(powf(a.x - b.x, 2) + powf(a.y - b.y, 2));
 }
 
-float MathHelper::angle(const Line& line)
+float seng::MathHelper::angle(const Line& line)
 {
 	return angle(line.a.position, line.b.position);
 }
 
-float MathHelper::angle(const sf::Vector2f& a, const sf::Vector2f& b)
+float seng::MathHelper::angle(const sf::Vector2f& a, const sf::Vector2f& b)
 {
 	return atan2f(b.y - a.y, b.x - a.x);
 }
 
 //explanation: https://www.youtube.com/watch?v=c065KoXooSw
-Nullable<sf::Vector2f> MathHelper::intersection(const sf::Vector2f &a1, const sf::Vector2f &b1, const sf::Vector2f &a2, const sf::Vector2f &b2)
+seng::Nullable<sf::Vector2f> seng::MathHelper::intersection(const sf::Vector2f &a1, const sf::Vector2f &b1, const sf::Vector2f &a2, const sf::Vector2f &b2)
 {
 	auto r = b1 - a1;
 	auto s = b2 - a2;
@@ -73,7 +73,7 @@ Nullable<sf::Vector2f> MathHelper::intersection(const sf::Vector2f &a1, const sf
 
 	//if the cross product of two 2D vectors is zero, the lines are parallel which means they are either infinite intersections or none
 	if (isZero(d))
-		return Nullable<sf::Vector2f>();
+		return seng::Nullable<sf::Vector2f>();
 
 	auto u = ((a2.x - a1.x) * r.y - (a2.y - a1.y) * r.x) / d;
 	auto t = ((a2.x - a1.x) * s.y - (a2.y - a1.y) * s.x) / d;
@@ -86,10 +86,10 @@ Nullable<sf::Vector2f> MathHelper::intersection(const sf::Vector2f &a1, const sf
 	if (u >= 0 && u <= 1 && t >= 0) 
 		return a1 + (t * r);
 
-	return Nullable<sf::Vector2f>();
+	return seng::Nullable<sf::Vector2f>();
 }
 
-sf::Vector2f MathHelper::raycast(const sf::Vector2f &a, const sf::Vector2f &b, const std::vector<Line> &lines)
+sf::Vector2f seng::MathHelper::raycast(const sf::Vector2f &a, const sf::Vector2f &b, const std::vector<Line> &lines)
 {
 	float shortest = std::numeric_limits<float>::max();
 	auto shortestIntersection = Nullable<sf::Vector2f>();

@@ -4,42 +4,42 @@
 #include "LightSource.h"
 #include "MathHelper.h"
 
-LightSource::LightSource()
+seng::LightSource::LightSource()
 	: _debugLineColor(sf::Color::Red), _color(sf::Color::Yellow), _isStatic(false), _staticAfterUpdate(false)
 {
 }
 
-void LightSource::setColor(const sf::Color& color)
+void seng::LightSource::setColor(const sf::Color& color)
 {
 	_color = color;
 }
 
-sf::Color LightSource::getColor() const
+sf::Color seng::LightSource::getColor() const
 {
 	return _color;
 }
 
-void LightSource::setDebugLineColor(const sf::Color& color)
+void seng::LightSource::setDebugLineColor(const sf::Color& color)
 {
 	_debugLineColor = color;
 }
 
-sf::Color LightSource::getDebugLineColor() const
+sf::Color seng::LightSource::getDebugLineColor() const
 {
 	return _debugLineColor;
 }
 
-void LightSource::setDebugLinesEnabled(const bool& value)
+void seng::LightSource::setDebugLinesEnabled(const bool& value)
 {
 	_debugLinesEnabled = value;
 }
 
-bool LightSource::getDebugLinesEnabled() const
+bool seng::LightSource::getDebugLinesEnabled() const
 {
 	return _debugLinesEnabled;
 }
 
-void LightSource::setIsStatic(const bool& value)
+void seng::LightSource::setIsStatic(const bool& value)
 {
 	if (value == true && !_isStatic)
 	{
@@ -52,12 +52,12 @@ void LightSource::setIsStatic(const bool& value)
 	}
 }
 
-bool LightSource::getIsStatic() const
+bool seng::LightSource::getIsStatic() const
 {
 	return _isStatic;
 }
 
-void LightSource::update(std::vector<CollidableShape> &shapes)
+void seng::LightSource::update(std::vector<CollidableShape> &shapes)
 {
 	if (_isStatic == false)
 	{
@@ -79,19 +79,19 @@ void LightSource::update(std::vector<CollidableShape> &shapes)
 	}
 }
 
-void LightSource::draw(sf::RenderTarget& target, sf::RenderStates states) const
+void seng::LightSource::draw(sf::RenderTarget& target, sf::RenderStates states) const
 {
 	target.draw(&_vertices[0], _vertices.size(), sf::PrimitiveType::TrianglesFan , states);
 
 	if (_debugLinesEnabled && _vertices.size() > 0)
 	{
 		//we don't need the first and the last point. They are the center and the first point duplicated
-		for (int i = 1; i < _vertices.size() - 1; ++i)
+		for (unsigned int i = 1; i < _vertices.size() - 1; ++i)
 			Line{ sf::Vertex(getPosition(), _color), sf::Vertex(_vertices[i].position, _debugLineColor) }.draw(target, states);
 	}
 }
 
-std::vector<sf::Vertex> LightSource::calculatePolygonVertices(std::vector<Line> &lines)
+std::vector<sf::Vertex> seng::LightSource::calculatePolygonVertices(std::vector<Line> &lines)
 {
 	std::vector<sf::Vertex> vertices;
 	std::vector<sf::Vector2f> uniquePoints;

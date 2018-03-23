@@ -1,18 +1,18 @@
 #include "BaseGame.h"
 
-BaseGame::BaseGame(const sf::VideoMode& videoMode, const sf::String& title)
+seng::BaseGame::BaseGame(const sf::VideoMode& videoMode, const sf::String& title)
 {
 	auto settings = sf::ContextSettings();
 	settings.antialiasingLevel = 8;
 	_window.create(videoMode, title, sf::Style::Default, settings);
 }
 
-void BaseGame::load()
+void seng::BaseGame::load()
 {
 	onLoad();
 }
 
-void BaseGame::update()
+void seng::BaseGame::update()
 {
 	auto elapsed = _clock.restart().asSeconds();
 	
@@ -27,7 +27,7 @@ void BaseGame::update()
 	onUpdate(elapsed);
 }
 
-void BaseGame::draw()
+void seng::BaseGame::draw()
 {
 	_window.clear(_clearColor);
 
@@ -36,22 +36,22 @@ void BaseGame::draw()
 	_window.display();
 }
 
-void BaseGame::unload()
+void seng::BaseGame::unload()
 {
 	onUnload();
 }
 
-void BaseGame::setClearColor(const sf::Color &color)
+void seng::BaseGame::setClearColor(const sf::Color &color)
 {
 	_clearColor = color;
 }
 
-bool BaseGame::isRunning()
+bool seng::BaseGame::isRunning()
 {
 	return _window.isOpen();
 }
 
-void BaseGame::exit()
+void seng::BaseGame::exit()
 {
 	_window.close();
 }
