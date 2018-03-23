@@ -3,6 +3,10 @@
 
 #include "MathHelper.h"
 
+#ifndef FLT_EPSILON
+#define FLT_EPSILON 1.192092896e-07F // smallest such that 1.0+FLT_EPSILON != 1.0
+#endif
+
 int MathHelper::clamp(const int &value, const int &min, const int &max)
 {
 	if (value > max) return max;

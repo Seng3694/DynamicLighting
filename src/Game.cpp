@@ -107,10 +107,10 @@ void Game::onLoad()
 	_defaultFont.loadFromFile("content/fonts/boxy_bold.ttf");
 	_fpsLabel.setFont(_defaultFont);
 	_fpsLabel.setPosition(300, 10);
-	_fpsLabel.setFillColor(sf::Color::Black);
+	_fpsLabel.setColor(sf::Color::Black);
 	_controlsText.setFont(_defaultFont);
 	_controlsText.setPosition(300, 70);
-	_controlsText.setFillColor(sf::Color::Black);
+	_controlsText.setColor(sf::Color::Black);
 	_controlsText.setString("Key D => toggle debug lines\n\nscroll => change color\n\nleft mouse => set light");
 	_controlsText.setScale(0.8f, 0.8f);
 }

@@ -86,8 +86,8 @@ void LightSource::draw(sf::RenderTarget& target, sf::RenderStates states) const
 	if (_debugLinesEnabled && _vertices.size() > 0)
 	{
 		//we don't need the first and the last point. They are the center and the first point duplicated
-		for (auto &it = _vertices.begin() + 1; it < _vertices.end() - 1; ++it)
-			Line{ sf::Vertex(getPosition(), _color), sf::Vertex(it->position, _debugLineColor) }.draw(target, states);
+		for (int i = 1; i < _vertices.size() - 1; ++i)
+			Line{ sf::Vertex(getPosition(), _color), sf::Vertex(_vertices[i].position, _debugLineColor) }.draw(target, states);
 	}
 }
 
