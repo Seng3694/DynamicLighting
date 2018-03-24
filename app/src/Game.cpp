@@ -286,7 +286,7 @@ void Game::onDraw(sf::RenderTarget& target)
 		for (auto &v : _currentLineVectors)
 			vertices.push_back(sf::Vertex(v, sf::Color::Black));
 
-		_objectTexture.draw(&vertices[0], vertices.size(), sf::PrimitiveType::LineStrip);
+		_objectTexture.draw(&vertices[0], vertices.size(), sf::PrimitiveType::LinesStrip);
 	}
 
 	for (auto &l : _extraLines)
