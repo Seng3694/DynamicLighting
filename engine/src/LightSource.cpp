@@ -57,18 +57,10 @@ bool seng::LightSource::getIsStatic() const
 	return _isStatic;
 }
 
-void seng::LightSource::update(std::vector<CollidableShape> &shapes)
+void seng::LightSource::update(std::vector<seng::Line> &lines)
 {
 	if (_isStatic == false)
 	{
-		std::vector<Line> lines;
-
-		for (auto &s : shapes)
-		{
-			auto l = s.getLines();
-			lines.insert(lines.end(), l.begin(), l.end());
-		}
-
 		_vertices = calculatePolygonVertices(lines);
 
 		if (_staticAfterUpdate)

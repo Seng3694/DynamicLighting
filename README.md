@@ -3,7 +3,13 @@
 C++ SFML experimental dynamic lighting project without shaders.
 
 ## Preview ##
-![Preview][1]
+8 Light sources:
+
+![Preview1][1]
+
+drawing lines:
+
+![Preview2][5]
 
 ## Build ##
 Project uses [CMake][2] to generate platform and compiler-specific build files.
@@ -52,3 +58,4 @@ Before building, make sure that [SFML 2.0+][3] is installed. Also note that this
 [2]: http://www.cmake.org/
 [3]: http://www.sfml-dev.org/
 [4]: https://github.com/Seng3694/DynamicLighting/blob/master/CMakeLists.txt
+[5]: https://cdn.discordapp.com/attachments/425728769236664350/427082786478751755/light_new.gif

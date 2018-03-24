@@ -41,4 +41,8 @@ private:
 	sf::Color _ambientColor;
 	int _colorIndex;
 	std::vector<sf::Color> _colors;
+	bool _isMouseDown;
+	std::vector<sf::Vector2f> _currentLineVectors;
+	std::vector<seng::Line> _extraLines;
+	bool _showLights;
 };

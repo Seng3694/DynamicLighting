@@ -27,6 +27,8 @@ void Game::onLoad()
 	_colors.push_back(Colors::Crimson);
 	_colors.push_back(Colors::OutrageousOrange);
 	_colors.push_back(Colors::GoldenPoppy);
+	_isMouseDown = false;
+	_showLights = true;
 
 	for (auto &c : _colors)
 	{
@@ -43,8 +45,8 @@ void Game::onLoad()
 	_objectTexture.create(_window.getSize().x, _window.getSize().y);
 	_objectTexture.setSmooth(true);
 
-	_bigCircle.setPointCount(40);
-	_bigCircle.setPosition(600, 300);
+	_bigCircle.setPointCount(30);
+	_bigCircle.setPosition(600, 350);
 	_bigCircle.setRadius(100);
 	_bigCircle.setFillColor(sf::Color::Red);
 
@@ -65,10 +67,10 @@ void Game::onLoad()
 	_polygon2.setPoint(3, sf::Vector2f(900, 650));
 	_polygon2.setFillColor(sf::Color::Magenta);
 
-	for (int i = 0; i < 5; i++)
+	for (int i = 0; i < 3; i++)
 	{
 		auto circle = sf::CircleShape();
-		circle.setPointCount(20);
+		circle.setPointCount(15);
 		circle.setPosition(sf::Vector2f(100 + (i * 100), i % 2 == 0 ? 700 : 550));
 		circle.setRadius(20);
 		circle.setFillColor(sf::Color(_random.range(50, 255), _random.range(50, 255), _random.range(50, 255)));
@@ -86,7 +88,7 @@ void Game::onLoad()
 	for (auto &s : _shapes)
 		s.reloadLines();
 
-	for (int i = 0; i < 8; i++)
+	for (int i = 0; i < 4; i++)
 	{
 		auto light = seng::LightSource();
 
@@ -112,7 +114,7 @@ void Game::onLoad()
 	_controlsText.setFont(_defaultFont);
 	_controlsText.setPosition(300, 70);
 	_controlsText.setColor(sf::Color::Black);
-	_controlsText.setString("Key D => toggle debug lines\n\nscroll => change color\n\nleft mouse => set light");
+	_controlsText.setString("Key D => toggle debug lines\n\nKey L => toggle light\n\nscroll => change color\n\nmiddle mouse => set light\n\nleft mouse => draw line");
 	_controlsText.setScale(0.8f, 0.8f);
 }
 
@@ -120,6 +122,7 @@ void Game::onHandleEvent(const sf::Event& e)
 {
 	if (e.type == sf::Event::EventType::MouseMoved)
 	{
+		//moving light source cirles
 		auto radians = (2 * PI) / _dynamicLights.size();
 		auto pos = sf::Vector2f(e.mouseMove.x, e.mouseMove.y);
 
@@ -132,11 +135,27 @@ void Game::onHandleEvent(const sf::Event& e)
 			_dynamicLights[i].setPosition(pos + vec);
 			_lightSourceCircles[i].setPosition(pos + vec);
 		}
+
+		//add points for line drawing
+		if (_isMouseDown)
+		{
+			_currentLineVectors.push_back(pos);
+		}
+	}
+	if (e.type == sf::Event::EventType::MouseButtonPressed)
+	{
+		//start line drawing
+		if (e.mouseButton.button == sf::Mouse::Left)
+		{
+			_currentLineVectors.push_back(sf::Vector2f(e.mouseButton.x, e.mouseButton.y));
+			_isMouseDown = true;
+		}
 	}
 	if (e.type == sf::Event::EventType::MouseButtonReleased)
 	{
-		if (e.mouseButton.button == sf::Mouse::Left)
+		if (e.mouseButton.button == sf::Mouse::Middle)
 		{
+			//set current dynamic lights to static and create new dynamic lights
 			for (auto &l : _dynamicLights)
 			{
 				l.setIsStatic(true);
@@ -148,9 +167,42 @@ void Game::onHandleEvent(const sf::Event& e)
 				l.setDebugLinesEnabled(_staticLights.back().getDebugLinesEnabled());
 			}
 		}
+		if (e.mouseButton.button == sf::Mouse::Left)
+		{
+			//end line drawing
+			_currentLineVectors.push_back(sf::Vector2f(e.mouseButton.x, e.mouseButton.y));
+			_isMouseDown = false;
+
+			auto distance = 10.0f;
+
+			//delete redundant points
+			_currentLineVectors.erase(
+				std::unique(
+					_currentLineVectors.begin(),
+					_currentLineVectors.end(),
+					[distance](sf::Vector2f l, sf::Vector2f r) { return seng::MathHelper::magnitude(l, r) <= distance; }),
+				_currentLineVectors.end());
+
+			//create collidable lines
+			for (unsigned int i = 0; i < _currentLineVectors.size(); ++i)
+			{
+				if (i + 1 < _currentLineVectors.size())
+					_extraLines.push_back(seng::Line{ _currentLineVectors[i],_currentLineVectors[i + 1], sf::Color::Black });
+			}
+
+			_currentLineVectors.clear();
+
+			//toggle static lights for one time recalculation
+			for (auto &sl : _staticLights)
+			{
+				sl.setIsStatic(false);
+				sl.setIsStatic(true);
+			}
+		}
 	}
 	if (e.type == sf::Event::MouseWheelScrolled)
 	{
+		//color change
 		if (e.mouseWheelScroll.delta > 0) 
 			_colorIndex = seng::MathHelper::circleClamp(_colorIndex + 1, 0, _colors.size() - 1);
 		else if (e.mouseWheelScroll.delta < 0)
@@ -165,11 +217,17 @@ void Game::onHandleEvent(const sf::Event& e)
 	{
 		if (e.key.code == sf::Keyboard::D)
 		{
+			//toggle debugLines
 			for (auto &l : _dynamicLights)
 				l.setDebugLinesEnabled(!l.getDebugLinesEnabled());
 
 			for (auto &l : _staticLights)
 				l.setDebugLinesEnabled(!l.getDebugLinesEnabled());
+		}
+		if (e.key.code == sf::Keyboard::L)
+		{
+			//toggle light layer visibility
+			_showLights = !_showLights;
 		}
 	}
 }
@@ -181,8 +239,21 @@ void Game::onUpdate(float dt)
 	ss << "Fps: " << _fpsCounter.getFps();
 	_fpsLabel.setString(ss.str());
 
+	std::vector<seng::Line> lines;
+
+	for (auto &s : _shapes)
+	{
+		auto l = s.getLines();
+		lines.insert(lines.end(), l.begin(), l.end());
+	}
+
+	lines.insert(lines.end(), _extraLines.begin(), _extraLines.end());
+	
+	for (auto &l : _staticLights)
+		l.update(lines);
+
 	for (auto &l : _dynamicLights)
-		l.update(_shapes);
+		l.update(lines);
 }
 
 void Game::onDraw(sf::RenderTarget& target)
@@ -209,11 +280,24 @@ void Game::onDraw(sf::RenderTarget& target)
 	for (auto &c : _smallCircles)
 		_objectTexture.draw(c);
 
-	_objectTexture.draw(sf::Sprite(_lightTexture.getTexture()), sf::BlendMultiply);
+	if (_isMouseDown && _currentLineVectors.size() > 0)
+	{
+		std::vector<sf::Vertex> vertices;
+		for (auto &v : _currentLineVectors)
+			vertices.push_back(sf::Vertex(v, sf::Color::Black));
+
+		_objectTexture.draw(&vertices[0], vertices.size(), sf::PrimitiveType::LineStrip);
+	}
+
+	for (auto &l : _extraLines)
+		_objectTexture.draw(l);
+
+	if(_showLights)
+		_objectTexture.draw(sf::Sprite(_lightTexture.getTexture()), sf::BlendMultiply);
+
 	_objectTexture.display();
 
 	target.draw(sf::Sprite(_objectTexture.getTexture()));
-
 
 	for (auto &s : _lightSourceCircles)
 		target.draw(s);

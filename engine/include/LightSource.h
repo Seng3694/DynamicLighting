@@ -14,7 +14,7 @@ namespace seng
 	public:
 		LightSource();
 
-		void update(std::vector<CollidableShape> &shapes);
+		void update(std::vector<seng::Line> &lines);
 		virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const override;
 
 		void setColor(const sf::Color& color);
